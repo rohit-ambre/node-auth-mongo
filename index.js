@@ -4,7 +4,6 @@ const helmet = require('helmet');
 const mongoose = require('mongoose');
 const app = express();
 
-const User = require('./models/user.model');
 // Modules
 const routes = require('./routes');
 
