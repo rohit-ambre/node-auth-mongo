@@ -1,5 +1,12 @@
-// node modules
+# node modules
 node_modules/
 
-// ENV file
+# ENV file
 .env
+
+# Logs
+logs
+*.log
+
+# dist
+dist
