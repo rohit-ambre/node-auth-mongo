@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser')
 const helmet = require('helmet');
 const mongoose = require('mongoose');
+const logger = require('morgan')
 const app = express();
 
 // Modules
@@ -13,6 +14,10 @@ require('dotenv').config()
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(helmet());
+
+if (process.env.NODE_ENV !== 'production') {
+    app.use(logger('dev'));
+}
 
 // Mongo Database connection
 mongoose.connect(process.env.MONGO_URI, {

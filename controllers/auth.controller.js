@@ -4,33 +4,32 @@ module.exports.SignUp = (req, res, next) => {
 
     this.findOne(req.body.email, (err, data) => {
         if (err) {
-            res.json({ response: false, message: 'some error occured' });
+            res.json({ status: false, message: 'some error occured', error: err });
         }
         if (data) {
-            res.json({ response: false, message: 'User already exist' });
+            res.json({ status: false, message: 'User already exist' });
         } else {
             const user = new User(req.body);
 
             user.save((err, data) => {
                 if (err) {
-                    return res.json({ response: false, message: "error creating new User" });
+                    return res.json({ status: false, message: "error creating new User", error: err });
                 }
-                res.json({ response: true, data: data })
+                res.json({ status: true, data: data })
             })
         }
     })
-    // res.send(req.body)
 }
 
-module.exports.findOne = (email, cb) => {
+module.exports.findOne = async (email, cb) => {
 
-    User.findOne({ email: email }, (err, data) => {
-        if (err) return cb(err)
-        if (!data) {
+    try {
+        const foundUser = await User.findOne({ email: email });
+        if (!foundUser) {
             return cb(null, null);
         }
-        else {
-            return cb(null, data)
-        }
-    })
+        return cb(null, foundUser)
+    } catch (error) {
+        if (error) return cb(error)
+    }
 }
