@@ -1,8 +1,28 @@
 const User = require('../models/user.model');
 const bcrypt = require('bcrypt');
 const JWT = require('jsonwebtoken');
+const { body, validationResult } = require('express-validator');
+
+
+exports.validate = (method) => {
+    switch (method) {
+        case 'SignUp': {
+            return [
+                body('username', 'userName doesn\'t exists').exists(),
+                body('email', 'Invalid email').exists().isEmail(),
+                body('first_name', 'enter first name').exists(),
+                body('last_name', 'enter last name').exists(),
+                body('password').exists().isLength({ min: 5 }),
+            ]
+        }
+    }
+}
+
 
 module.exports.SignUp = (req, res) => {
+
+    const errors = validationResult(req);
+    console.log(errors)
 
     this.findOne(req.body.email, (err, data) => {
         if (err) {
@@ -26,6 +46,8 @@ module.exports.SignUp = (req, res) => {
 
 module.exports.Login = (req, res) => {
 
+    const errors = validationResult(req)
+    console.log(errors)
     this.findOne(req.body.email, (err, data) => {
         if (err) {
             console.log(err)
