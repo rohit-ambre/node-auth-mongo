@@ -9,6 +9,8 @@ const userSchema = new mongoose.Schema({
     "password": { type: String, required: true }
 }, { timestamps: true });
 
+// unique field used for authentication
+userSchema.statics.UNIQUE_FIELD = 'email';
 
 // encrypt password before save
 userSchema.pre('save', function (next) {
@@ -27,6 +29,20 @@ userSchema.pre('save', function (next) {
         });
     }
 })
+
+
+userSchema.statics.findOneUser = async (field, cb) => {
+
+    try {      
+        const foundUser = await User.findOne({ [User.UNIQUE_FIELD]: field });
+        if (!foundUser) {
+            return cb(null, null);
+        }
+        return cb(null, foundUser)
+    } catch (error) {
+        if (error) return cb(error)
+    }
+}
 
 const User = new mongoose.model('User', userSchema);
 module.exports = User;

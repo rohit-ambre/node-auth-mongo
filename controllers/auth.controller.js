@@ -4,15 +4,28 @@ const JWT = require('jsonwebtoken');
 const { body, validationResult } = require('express-validator');
 
 
-exports.validate = (method) => {
+exports.validateRules = (method) => {
     switch (method) {
         case 'SignUp': {
             return [
                 body('username', 'userName doesn\'t exists').exists(),
-                body('email', 'Invalid email').exists().isEmail(),
+                body('email')
+                    .exists().withMessage('email does not exist')
+                    .isEmail().withMessage('Invalid email'),
                 body('first_name', 'enter first name').exists(),
                 body('last_name', 'enter last name').exists(),
-                body('password').exists().isLength({ min: 5 }),
+                body('password')
+                    .exists().withMessage('password does not exist')
+                    .isLength({ min: 5 }).withMessage('must be at least 5 chars long'),
+            ]
+        }
+        case 'login': {
+            return [
+                body('email')
+                    .exists().withMessage('email does not exist')
+                    .isEmail().withMessage('Invalid email'),
+                body('password')
+                    .exists().withMessage('password does not exist'),
             ]
         }
     }
@@ -20,11 +33,8 @@ exports.validate = (method) => {
 
 
 module.exports.SignUp = (req, res) => {
-
-    const errors = validationResult(req);
-    console.log(errors)
-
-    this.findOne(req.body.email, (err, data) => {
+    
+    User.findOneUser(req.body[User.UNIQUE_FIELD], (err, data) => {
         if (err) {
             res.status(500).json({ status: false, message: 'some error occured', error: err });
         }
@@ -46,9 +56,7 @@ module.exports.SignUp = (req, res) => {
 
 module.exports.Login = (req, res) => {
 
-    const errors = validationResult(req)
-    console.log(errors)
-    this.findOne(req.body.email, (err, data) => {
+    User.findOneUser(req.body[User.UNIQUE_FIELD], (err, data) => {
         if (err) {
             console.log(err)
             res.status(500).json({ status: false, message: "some error occured", error: err });
@@ -62,14 +70,15 @@ module.exports.Login = (req, res) => {
                     { data: data.id },
                     process.env.JWT_SECRET,
                     { expiresIn: expiry }
-                )
-                res.status(200).json({ status: true, access_token: token, expiresIn: expiry })
+                );
+                res.status(200).json({ status: true, message:"User successfully logged in", access_token: token, expiresIn: expiry })
             } else {
                 res.status(401).json({ status: false, message: "Wrong password" });
             }
         }
     });
 }
+
 
 module.exports.getAllUsers = (req, res) => {
 
@@ -83,15 +92,18 @@ module.exports.getAllUsers = (req, res) => {
     });
 }
 
-module.exports.findOne = async (email, cb) => {
 
-    try {
-        const foundUser = await User.findOne({ email: email });
-        if (!foundUser) {
-            return cb(null, null);
-        }
-        return cb(null, foundUser)
-    } catch (error) {
-        if (error) return cb(error)
+module.exports.validate = (req, res, next) => {
+    const errors = validationResult(req)
+    if (errors.isEmpty()) {
+        return next()
     }
+    const extractedErrors = []
+    errors.array().map(err => extractedErrors.push({ [err.param]: err.msg }))
+  
+    return res.status(422).json({
+        status: false,
+        message: "Validation errors",
+        error: extractedErrors,
+    })
 }
