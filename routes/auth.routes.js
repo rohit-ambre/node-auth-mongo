@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-// const { body } = require('express-validator');
 
 const { validateRules, SignUp, validate, Login, getAllUsers } = require('../controllers/auth.controller');
 const { ValidateJWT } = require('../services/auth.utils');

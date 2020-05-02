@@ -2,17 +2,41 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
 const userSchema = new mongoose.Schema({
-    "username": { type: String, unique: true, trim: true },
-    "email": { type: String, required: true, unique: true, trim: true },
-    "first_name": { type: String, trim: true },
-    "last_name": { type: String, trim: true },
-    "password": { type: String, required: true }
+    "username": { 
+        type: String,
+        unique: true,
+        trim: true 
+    },
+    "email": { 
+        type: String, 
+        required: true, 
+        unique: true, 
+        trim: true 
+    },
+    "first_name": { 
+        type: String, 
+        trim: true 
+    },
+    "last_name": { 
+        type: String, 
+        trim: true 
+    },
+    "password": { 
+        type: String, 
+        required: true 
+    }
 }, { timestamps: true });
 
-// unique field used for authentication
+
+/** 
+ * unique field used for authentication 
+ */ 
 userSchema.statics.UNIQUE_FIELD = 'email';
 
-// encrypt password before save
+
+/** 
+ * encrypt password before save
+ */ 
 userSchema.pre('save', function (next) {
 
     const user = this;
@@ -31,6 +55,10 @@ userSchema.pre('save', function (next) {
 })
 
 
+/**
+ * Checks whether user with same unique fiels already exist or not
+ * @returns User object on success and null if not found
+ */
 userSchema.statics.findOneUser = async (field, cb) => {
 
     try {      

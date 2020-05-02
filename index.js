@@ -4,7 +4,6 @@ const helmet = require('helmet');
 const mongoose = require('mongoose');
 const logger = require('morgan')
 const app = express();
-// const expressValidator = require('express-validator')
 // Modules
 const routes = require('./routes');
 
@@ -14,7 +13,6 @@ require('dotenv').config()
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(helmet());
-// app.use(expressValidator())
 
 if (process.env.NODE_ENV !== 'production') {
     app.use(logger('dev'));
