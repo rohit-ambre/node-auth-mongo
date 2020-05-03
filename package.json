@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "dev": "cross-env NODE_ENV=development nodemon index.js"
+    "dev": "cross-env NODE_ENV=development nodemon index.js",
+    "lint": "eslint --fix . && echo 'Lint complete.'"
   },
   "keywords": [
     "nodejs"
@@ -21,11 +22,17 @@
     "express-validator": "^6.4.0",
     "helmet": "^3.21.2",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.8.9"
+    "mongoose": "^5.8.9",
+    "morgan": "^1.9.1"
   },
   "devDependencies": {
     "cross-env": "^7.0.0",
-    "morgan": "^1.9.1",
-    "nodemon": "^2.0.2"
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-prettier": "^3.1.3",
+    "nodemon": "^2.0.2",
+    "prettier": "^2.0.5"
   }
 }
