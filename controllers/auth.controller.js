@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const JWT = require('jsonwebtoken');
 const { body, validationResult } = require('express-validator');
 const User = require('../models/user.model');
+const logger = require('../winston-config');
 
 exports.validateRules = (method) => {
     switch (method) {
@@ -42,6 +43,7 @@ exports.validateRules = (method) => {
 module.exports.SignUp = (req, res) => {
     User.findOneUser(req.body[User.UNIQUE_FIELD], (err, data) => {
         if (err) {
+            logger.error(`DB Error: ${err.message}`);
             res.status(500).json({
                 status: false,
                 message: 'some error occured',
@@ -58,6 +60,7 @@ module.exports.SignUp = (req, res) => {
 
             user.save((er, new_user) => {
                 if (er) {
+                    logger.error(`DB Error: ${er.message}`);
                     return res.status(500).json({
                         status: false,
                         message: 'error creating new User',
@@ -73,6 +76,7 @@ module.exports.SignUp = (req, res) => {
 module.exports.Login = (req, res) => {
     User.findOneUser(req.body[User.UNIQUE_FIELD], (err, data) => {
         if (err) {
+            logger.error(`DB Error: ${err.message}`);
             res.status(500).json({
                 status: false,
                 message: 'some error occured',
@@ -116,6 +120,7 @@ module.exports.getAllUsers = (req, res) => {
         '_id username email first_name last_name createdAt updatedAt',
         (err, users) => {
             if (err) {
+                logger.error(`DB Error: ${err.message}`);
                 res.status(500).json({
                     status: false,
                     message: 'some error occured',
@@ -137,6 +142,7 @@ module.exports.validate = (req, res, next) => {
     const extractedErrors = [];
     errors.array().map((err) => extractedErrors.push({ [err.param]: err.msg }));
 
+    logger.warn(`Validation Error on: '${req.url}'`);
     return res.status(422).json({
         status: false,
         message: 'Validation errors',

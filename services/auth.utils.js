@@ -1,4 +1,5 @@
 const JWT = require('jsonwebtoken');
+const logger = require('../winston-config');
 
 module.exports.ValidateJWT = (req, res, next) => {
     const token = req.headers['x-access-token'] || req.headers.authorization;
@@ -9,6 +10,7 @@ module.exports.ValidateJWT = (req, res, next) => {
 
     JWT.verify(token, process.env.JWT_SECRET, (err, decoded) => {
         if (err) {
+            logger.error(`JWT: ${err.message}`);
             return res
                 .status(401)
                 .json({ status: false, error: 'Token is not valid' });

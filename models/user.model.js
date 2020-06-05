@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const logger = require('../winston-config');
 
 const userSchema = new mongoose.Schema(
     {
@@ -64,7 +65,10 @@ userSchema.pre('save', (next) => {
  */
 userSchema.statics.findOneUser = function (field, cb) {
     this.findOne({ [this.UNIQUE_FIELD]: field }, function (err, foundUser) {
-        if (err) return cb(err);
+        if (err) {
+            logger.error(`DB Error: ${err.message}`);
+            return cb(err);
+        }
         if (!foundUser) {
             return cb(null, null);
         }
