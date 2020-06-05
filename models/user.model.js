@@ -30,7 +30,6 @@ const userSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
-const User = new mongoose.model('User', userSchema);
 /**
  * unique field used for authentication
  */
@@ -63,16 +62,15 @@ userSchema.pre('save', (next) => {
  * Checks whether user with same unique fiels already exist or not
  * @returns User object on success and null if not found
  */
-userSchema.statics.findOneUser = async (field, cb) => {
-    try {
-        const foundUser = await User.findOne({ [User.UNIQUE_FIELD]: field });
+userSchema.statics.findOneUser = function (field, cb) {
+    this.findOne({ [this.UNIQUE_FIELD]: field }, function (err, foundUser) {
+        if (err) return cb(err);
         if (!foundUser) {
             return cb(null, null);
         }
+
         return cb(null, foundUser);
-    } catch (error) {
-        if (error) return cb(error);
-    }
+    });
 };
 
-module.exports = User;
+module.exports = new mongoose.model('User', userSchema);

@@ -101,6 +101,11 @@ module.exports.Login = (req, res) => {
                     message: 'Wrong password',
                 });
             }
+        } else {
+            res.status(404).json({
+                status: false,
+                message: 'User not found',
+            });
         }
     });
 };

@@ -14,12 +14,13 @@ module.exports = {
       sourceType: 'module'
     },
     rules: {
-        'prettier/prettier': 'error',
+        'prettier/prettier': 'warn',
         'class-methods-use-this': 'off',
         'no-param-reassign': 'off',
         'camelcase': 'off',
         'no-unused-vars': ['error', { argsIgnorePattern: 'next' }],
         'consistent-return': 'off',
-        'new-cap':'off'
+        'new-cap':'off',
+        'func-names': "off"
     }
   };

@@ -14,7 +14,6 @@ module.exports.ValidateJWT = (req, res, next) => {
                 .json({ status: false, error: 'Token is not valid' });
         }
         req.decoded = decoded;
-        console.log(decoded);
         next();
     });
 };
