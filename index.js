@@ -4,13 +4,14 @@ const helmet = require('helmet');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 
-const logger = require('./winston-config');
-
-const app = express();
 // Modules
+const logger = require('./winston-config');
 const routes = require('./routes');
 
 require('dotenv').config();
+
+// create express app
+const app = express();
 
 // Middlewares
 app.use(bodyParser.urlencoded({ extended: true }));
