@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
+const path = require('path');
 
 // Modules
 const logger = require('./winston-config');
@@ -44,6 +45,14 @@ db.once('open', () => {
     logger.info('We are connected to the database');
 
     app.use('/api', routes);
+
+    app.use('/', (req, res) => {
+        res.send('<h3 style="text-align:center">This is a Boilerplate Express application with authentication with mongo Database</h3>');
+    })
+  
+    app.use('*', (req, res) => {
+        res.sendFile(path.join(__dirname, '/not_found.html'));
+    })
 });
 
 app.listen(process.env.NODE_PORT, () => {
