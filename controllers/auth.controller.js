@@ -1,7 +1,7 @@
 /* eslint-disable consistent-return */
 const bcrypt = require('bcrypt');
 const JWT = require('jsonwebtoken');
-const { body, validationResult } = require('express-validator');
+const { body } = require('express-validator');
 const User = require('../models/user.model');
 const logger = require('../winston-config');
 
@@ -132,20 +132,4 @@ module.exports.getAllUsers = (req, res) => {
             }
         }
     );
-};
-
-module.exports.validate = (req, res, next) => {
-    const errors = validationResult(req);
-    if (errors.isEmpty()) {
-        return next();
-    }
-    const extractedErrors = [];
-    errors.array().map((err) => extractedErrors.push({ [err.param]: err.msg }));
-
-    logger.warn(`Validation Error on: '${req.url}'`);
-    return res.status(422).json({
-        status: false,
-        message: 'Validation errors',
-        error: extractedErrors,
-    });
 };

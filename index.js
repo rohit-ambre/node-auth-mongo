@@ -47,12 +47,14 @@ db.once('open', () => {
     app.use('/api', routes);
 
     app.use('/', (req, res) => {
-        res.send('<h3 style="text-align:center">This is a Boilerplate Express application with authentication with mongo Database</h3>');
-    })
-  
+        res.send(
+            '<h3 style="text-align:center">This is a Boilerplate Express application with authentication with mongo Database</h3>'
+        );
+    });
+
     app.use('*', (req, res) => {
         res.sendFile(path.join(__dirname, '/not_found.html'));
-    })
+    });
 });
 
 app.listen(process.env.NODE_PORT, () => {
