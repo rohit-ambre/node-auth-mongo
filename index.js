@@ -57,6 +57,13 @@ db.once('open', () => {
     });
 });
 
-app.listen(process.env.NODE_PORT, () => {
+const server = app.listen(process.env.NODE_PORT, () => {
     logger.info(`server started on port ${process.env.NODE_PORT}`);
+});
+
+process.on('SIGINT', () => {
+    logger.warn('SIGINT RECEIVED. Shutting down gracefully');
+    server.close(() => {
+        logger.info('💥 Process terminated!');
+    });
 });
