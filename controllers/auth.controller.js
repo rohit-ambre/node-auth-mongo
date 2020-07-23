@@ -9,7 +9,7 @@ exports.validateRules = (method) => {
     switch (method) {
         case 'SignUp': {
             return [
-                body('username', "userName doesn't exists").exists(),
+                body('username', "username doesn't exists").exists(),
                 body('email')
                     .exists()
                     .withMessage('email does not exist')
