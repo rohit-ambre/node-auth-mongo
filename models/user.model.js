@@ -39,7 +39,7 @@ userSchema.statics.UNIQUE_FIELD = 'email';
 /**
  * encrypt password before save
  */
-userSchema.pre('save', (next) => {
+userSchema.pre('save', function (next) {
     const user = this;
     // don't rehash if it's an old user
     if (!user.isModified || !user.isNew) {
