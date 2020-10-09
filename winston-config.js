@@ -11,14 +11,6 @@ const myFormat = winston.format.printf(({ level, message, timestamp }) => {
 // Winston logger configuraiton
 const logger = winston.createLogger({
     level: 'info',
-    format: winston.format.combine(
-        winston.format.colorize(),
-        winston.format.timestamp({
-            format: 'YYYY-MM-DD HH:mm:ss',
-        }),
-        myFormat
-    ),
-    defaultMeta: { service: 'user-service' },
     exitOnError: false,
     transports: [
         // - Write all logs with level `error` and below to `error.log`
@@ -27,16 +19,30 @@ const logger = winston.createLogger({
             filename: 'logs/error.log',
             level: 'error',
             maxsize: 1024 * 1024 * 10, // 10MB
+            format: winston.format.combine(
+                winston.format.timestamp(),
+                winston.format.json()
+            ),
         }),
         new winston.transports.File({
             filename: 'logs/combined.log',
             maxsize: 1024 * 1024 * 10, // 10MB
+            format: winston.format.combine(
+                winston.format.timestamp(),
+                winston.format.json()
+            ),
         }),
         new winston.transports.Console({
             level: 'debug',
             handleExceptions: true,
             json: false,
-            colorize: true,
+            format: winston.format.combine(
+                winston.format.colorize(),
+                winston.format.timestamp({
+                    format: 'YYYY-MM-DD HH:mm:ss',
+                }),
+                myFormat
+            ),
         }),
     ],
 });
