@@ -3,9 +3,9 @@ const express = require('express');
 const router = express.Router();
 const { validate } = require('../services/utils');
 const {
-    validateRules,
-    SignUp,
-    Login,
+  validateRules,
+  SignUp,
+  Login,
 } = require('../controllers/auth.controller');
 
 router.post('/signup', validateRules('SignUp'), validate, SignUp);
