@@ -6,7 +6,7 @@ const morgan = require('morgan');
 
 // Modules
 const logger = require('./winston-config');
-const routes = require('./routes');
+const routes = require('./src/routes');
 
 require('dotenv').config();
 

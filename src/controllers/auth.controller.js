@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const JWT = require('jsonwebtoken');
 const { body } = require('express-validator');
 const User = require('../models/user.model');
-const logger = require('../winston-config');
+const logger = require('../../winston-config');
 
 exports.validateRules = (method) => {
   switch (method) {

@@ -1,5 +1,5 @@
 const User = require('../models/user.model');
-const logger = require('../winston-config');
+const logger = require('../../winston-config');
 
 module.exports.getAllUsers = (req, res) => {
   User.find(

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const logger = require('../winston-config');
+const logger = require('../../winston-config');
 
 const userSchema = new mongoose.Schema(
   {

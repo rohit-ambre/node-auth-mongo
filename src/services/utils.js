@@ -1,6 +1,6 @@
 const JWT = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
-const logger = require('../winston-config');
+const logger = require('../../winston-config');
 
 module.exports.ValidateJWT = (req, res, next) => {
   const token = req.headers['x-access-token'] || req.headers.authorization;
