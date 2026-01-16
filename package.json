@@ -15,7 +15,7 @@
   "author": "Rohit Ambre",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^5.1.1",
+    "bcrypt": "^6.0.0",
     "dotenv": "^8.2.0",
     "express": "^4.20.0",
     "express-validator": "^6.14.2",
